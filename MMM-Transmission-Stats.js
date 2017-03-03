@@ -131,21 +131,22 @@ Module.register("MMM-Transmission-Stats", {
 
     setupViews: function(){
         var self = this;
+        this.components.views.emptyUpdate = Backbone.View.extend({
+            tagName: "tr",
+                className: "transmission-single-activity normal",
+                template: MMMTransmissionStats.Templates.emptyUpdate,
+                render: function(){
+                this.$el.html( this.template( self.addViewConfig({}, false) ) );
+                return this;
+            }
+        });
         this.components.views.singleUpdate = Backbone.View.extend({
             tagName: "tr",
             className: "transmission-single-activity normal",
             template: MMMTransmissionStats.Templates.update,
-            initialize: function(){
-                this.on("postrender", this.postRender, this);
-            },
             render: function(){
                 this.$el.html( this.template( self.addViewConfig(this.model.toJSON(), false) ) );
                 return this;
-            },
-            postRender: function(){
-                this.$el.find('.slide-image img').on('error',function(e){
-                    $(this).attr('src', self.file("images/no-image.png"));
-                });
             }
         });
         this.components.collections.updates = Backbone.Collection.extend({
@@ -168,9 +169,15 @@ Module.register("MMM-Transmission-Stats", {
             render: function(){
                 var that = this;
                 this.$el.html( this.template( self.addViewConfig({},true) ) );
-                _(this.updateViews).each(function(updateView){
-                    that.$el.find('tbody').append( updateView.render().$el );
-                });
+                if( this.updateViews.length ){
+                    _(this.updateViews).each(function(updateView){
+                        that.$el.find('tbody').append( updateView.render().$el );
+                    });    
+                } else {
+                    var emptyUpdate = new self.components.views.emptyUpdate();
+                    that.$el.find('tbody').append( emptyUpdate.render().$el );
+                }
+                
                 return this;
             }
         });

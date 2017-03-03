@@ -1,6 +1,16 @@
 this["MMMTransmissionStats"] = this["MMMTransmissionStats"] || {};
 this["MMMTransmissionStats"]["Templates"] = this["MMMTransmissionStats"]["Templates"] || {};
 
+this["MMMTransmissionStats"]["Templates"]["emptyUpdate"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    return "	<td colspan=\"7\">\n		<p>Loading...</p>\n	</td>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "	<td colspan=\"5\">\n		<p>Loading...</p>\n	</td>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.config : depth0)) != null ? stack1.showCumulative : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
+},"useData":true});
+
 this["MMMTransmissionStats"]["Templates"]["update"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
