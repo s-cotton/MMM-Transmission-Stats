@@ -1,9 +1,9 @@
-	<td class="mmmts-icon"><span class="fa fa-{{serverIcon}}" title="{{serverLabel}}"></span></td>
+	<th class="mmmts-icon"><span class="fa fa-{{serverIcon}}" title="{{serverLabel}}"></span></th>
 	<td class="mmmts-active">{{totalActive}}</td>
 	<td class="mmmts-paused">{{totalInactive}}</td>
 	<td class="mmmts-speed-down">{{totalRateDown}}</td>
 	<td class="mmmts-speed-up">{{totalRateUp}}</td>
-	{{#if showCumulative}}
+	{{#if config.showCumulative}}
 	<td class="mmmts-total-down">{{totalDown}}</td>
 	<td class="mmmts-total-up">{{totalUp}}</td>
 	{{/if}}

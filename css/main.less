@@ -23,7 +23,7 @@
     		}
     	}
     	tbody {
-    		td {
+    		td,th {
     			text-align: center;
 
     			&.mmmts-icon { text-align: center; }
@@ -32,6 +32,16 @@
     			&.mmmts-speed-down { border-left: 1px solid #666; }
     			&.mmmts-speed-up {  }
     			&.mmmts-total-down { text-align: right; border-left: 1px solid #666; }
+    			&.mmmts-total-up { text-align: right; }
+    		}
+    	}
+    	tfoot {
+    		th {
+    			border-top: 1px solid #666;
+    			text-align: center;
+    			&.mmmts-active { border-left: 1px solid #666; }
+    			&.mmmts-speed-down { border-left: 1px solid #666; }
+    			&.mmmts-total-down { border-left: 1px solid #666; text-align: right; }
     			&.mmmts-total-up { text-align: right; }
     		}
     	}

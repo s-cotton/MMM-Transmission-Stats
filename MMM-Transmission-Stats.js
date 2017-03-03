@@ -27,7 +27,17 @@ Module.register("MMM-Transmission-Stats", {
         
         updateInterval: 5000,
         showCumulative: false,
+        showTotals: false,
         debug: false,
+    },
+
+    totals: {
+        totalActive     : 0,
+        totalInactive   : 0,
+        totalRateUp     : 0,
+        totalRateDown   : 0,
+        totalUp         : 0,
+        totalDown       : 0,
     },
 
     components: {
@@ -39,6 +49,14 @@ Module.register("MMM-Transmission-Stats", {
     updateModels: [],
     updateViews: [],
     allUpdatesView: null,
+
+    suspend: function(){
+        this.stopUpdateTimer();
+    },
+
+    resume: function(){
+        this.startUpdateTimer();
+    },
     
     // Subclass start method.
     start: function () {
@@ -51,12 +69,22 @@ Module.register("MMM-Transmission-Stats", {
         this.setupModels();
         this.setupViews();
 
-        self.requestLatestStatistics();
-        
+        this.requestLatestStatistics();
+        this.startUpdateTimer();
+    },
+
+    startUpdateTimer: function(){
+        var self = this;
+        if( moment().valueOf() - this.lastUpdate > this.config.updateInterval ){
+            this.requestLatestStatistics();
+        }
         this.updater = setInterval(function(){
             self.requestLatestStatistics();
         }, this.config.updateInterval );
+    },
 
+    stopUpdateTimer: function(){
+        clearInterval(this.updater);
     },
 
     setupModels: function(){
@@ -77,10 +105,28 @@ Module.register("MMM-Transmission-Stats", {
         });
     },
 
-    addViewConfig: function(data){        
-        return _.extend({},data,{
-            showCumulative: this.config.showCumulative
-        });
+    addViewConfig: function(data,addTotals){        
+        return _.extend({},
+            data,
+            {
+                config: {
+                    showCumulative: this.config.showCumulative,
+                    showTotals: this.config.showTotals    
+                }                
+            },
+            ( this.config.showTotals && addTotals ? { totals: this.formatTotals() } : {} )
+        );
+    },
+
+    formatTotals: function(){
+        return {
+            totalActive     : this.totals.totalActive   > 0 ? this.totals.totalActive                             : '--',
+            totalInactive   : this.totals.totalInactive > 0 ? this.totals.totalInactive                           : '--',
+            totalRateUp     : this.totals.totalRateUp   > 0 ? this.formatBytes( this.totals.totalRateUp, true )   : '--',
+            totalRateDown   : this.totals.totalRateDown > 0 ? this.formatBytes( this.totals.totalRateDown, true ) : '--',
+            totalUp         : this.totals.totalUp       > 0 ? this.formatBytes( this.totals.totalUp, false )      : '--',
+            totalDown       : this.totals.totalDown     > 0 ? this.formatBytes( this.totals.totalDown, false )    : '--',
+        };
     },
 
     setupViews: function(){
@@ -93,7 +139,7 @@ Module.register("MMM-Transmission-Stats", {
                 this.on("postrender", this.postRender, this);
             },
             render: function(){
-                this.$el.html( this.template( self.addViewConfig(this.model.toJSON()) ) );
+                this.$el.html( this.template( self.addViewConfig(this.model.toJSON(), false) ) );
                 return this;
             },
             postRender: function(){
@@ -121,7 +167,7 @@ Module.register("MMM-Transmission-Stats", {
             },
             render: function(){
                 var that = this;
-                this.$el.html( this.template( self.addViewConfig({}) ) );
+                this.$el.html( this.template( self.addViewConfig({},true) ) );
                 _(this.updateViews).each(function(updateView){
                     that.$el.find('tbody').append( updateView.render().$el );
                 });
@@ -163,6 +209,14 @@ Module.register("MMM-Transmission-Stats", {
     refreshStatistics: function( payload ){
         if (this.config.debug) Log.info( payload );
         this.models = [];
+        this.totals = {
+            totalActive     : 0,
+            totalInactive   : 0,
+            totalRateUp     : 0,
+            totalRateDown   : 0,
+            totalUp         : 0,
+            totalDown       : 0,
+        };
         _(payload).each(function(record, record_i){
             this.models.push( new this.components.models.update( this.processStatisticRecord( record ) ));
         }, this);
@@ -181,6 +235,14 @@ Module.register("MMM-Transmission-Stats", {
     },
 
     processStatisticRecord: function(record){
+        if( this.config.showTotals ){
+            this.totals.totalActive   = this.totals.totalActive   + record.stats.activeTorrentCount;
+            this.totals.totalInactive = this.totals.totalInactive + record.stats.pausedTorrentCount;
+            this.totals.totalRateUp   = this.totals.totalRateUp   + record.stats.uploadSpeed;
+            this.totals.totalRateDown = this.totals.totalRateDown + record.stats.downloadSpeed;
+            this.totals.totalUp       = this.totals.totalUp       + record.stats['current-stats'].uploadedBytes;
+            this.totals.totalDown     = this.totals.totalDown     + record.stats['current-stats'].downloadedBytes;
+        }
         return {
             totalActive     : record.stats.activeTorrentCount > 0 ? record.stats.activeTorrentCount : '--',
             totalInactive   : record.stats.pausedTorrentCount > 0 ? record.stats.pausedTorrentCount : '--',

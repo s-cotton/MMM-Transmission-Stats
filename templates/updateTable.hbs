@@ -1,4 +1,4 @@
-<table class="xsmall light {{#if showCumulative}}cumulative-enabled{{/if}}">
+<table class="xsmall light {{#if config.showCumulative}}cumulative-enabled{{/if}}">
 	<thead>
 		<tr>
 			<th class="mmmts-icon">
@@ -16,7 +16,7 @@
 			<th class="mmmts-speed-up">
 				<span class="fa fa-cloud-upload"></span>
 			</th>
-			{{#if showCumulative}}
+			{{#if config.showCumulative}}
 			<th class="mmmts-total-down">
 				<span class="fa fa-download"></span>
 			</th>
@@ -29,4 +29,33 @@
 	<tbody>
 		
 	</tbody>
+	{{#if config.showTotals}}
+	<tfoot>
+		<tr>
+			<th class="mmmts-icon">
+				&nbsp;
+			</th>
+			<th class="mmmts-active">
+				{{totals.totalActive}}
+			</th>
+			<th class="mmmts-paused">
+				{{totals.totalInactive}}
+			</th>
+			<th class="mmmts-speed-down">
+				{{totals.totalRateDown}}
+			</th>
+			<th class="mmmts-speed-up">
+				{{totals.totalRateUp}}
+			</th>
+			{{#if config.showCumulative}}
+			<th class="mmmts-total-down">
+				{{totals.totalDown}}
+			</th>
+			<th class="mmmts-total-up">
+				{{totals.totalUp}}
+			</th>
+			{{/if}}
+		</tr>
+	</tfoot>
+	{{/if}}
 </table>

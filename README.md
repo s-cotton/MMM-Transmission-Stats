@@ -43,7 +43,7 @@ The following properties can be configured:
 	<tbody>
     <tr>
 			<td><code>servers</code></td>
-			<td>One or more Server Conneciton configurations containing "host", "port", "username", "password", "serverLabel" and "serverIcon"<br> At least one server configuration is <b>REQUIRED</b></td>
+			<td>One or more Server Connection configurations containing "host", "port", "username", "password", "serverLabel" and "serverIcon"<br> At least one server configuration is <b>REQUIRED</b></td>
 		</tr>
 		<tr>
 			<td><code>updateInterval</code></td>
@@ -52,6 +52,10 @@ The following properties can be configured:
 		<tr>
 			<td><code>showCumulative</code></td>
 			<td>Should cumulative totals be displayed, boolean "true" or "false"</td>
+		</tr>
+		<tr>
+			<td><code>showTotals</code></td>
+			<td>Should totals across all servers be displayed, boolean "true" or "false"</td>
 		</tr>
 	</tbody>
 </table>
