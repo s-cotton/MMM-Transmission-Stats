@@ -21,7 +21,8 @@ modules: [
         	{ host: "localhost", port: "9091", username: "", password: "", serverLabel: "Server", serverIcon:  "server" },
         	{ host: "192.168.1.1", port: "9091", username: "", password: "", serverLabel: "Server 2", serverIcon:  "archive" },
         ],
-        updateInterval: 5000
+        updateInterval: 5000,
+        showCumulative: false
     }
 },
 ]
