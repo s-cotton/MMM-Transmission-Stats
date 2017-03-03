@@ -1,0 +1,35 @@
+{
+  "name": "MMM-Transmission-Stats",
+  "version": "0.0.1",
+  "description": "MagicMirror module for displaying Transmission Statistics",
+  "main": "MMM-Transmission-Stats.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/s-cotton/MMM-Transmission-Stats"
+  },
+  "keywords": [
+    "MagicMirror",
+    "Transmission"
+  ],
+  "author": "Stephen Cotton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/s-cotton/MMM-Transmission-Stats/issues"
+  },
+  "homepage": "https://github.com/s-cotton/MMM-Transmission-Stats",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-less": "^1.4.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2"
+  },
+  "dependencies": {
+    "transmission": "^0.4.9",
+    "underscore": "^1.8.3"
+  }
+}

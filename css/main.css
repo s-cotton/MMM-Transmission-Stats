@@ -1,0 +1,63 @@
+.transmission-activity {
+  width: 460px;
+  height: auto;
+  position: relative;
+}
+.transmission-activity table {
+  width: 100%;
+}
+.transmission-activity table thead th {
+  border-bottom: 1px solid #666;
+  text-align: center;
+}
+.transmission-activity table thead th.mmmts-icon {
+  width: 26px;
+}
+.transmission-activity table thead th.mmmts-active {
+  width: 25px;
+  border-left: 1px solid #666;
+}
+.transmission-activity table thead th.mmmts-paused {
+  width: 25px;
+}
+.transmission-activity table thead th.mmmts-speed-down {
+  width: 192px;
+  border-left: 1px solid #666;
+}
+.transmission-activity table thead th.mmmts-speed-up {
+  width: 192px;
+}
+.transmission-activity table thead th.mmmts-total-down {
+  width: 75px;
+  border-left: 1px solid #666;
+  text-align: right;
+}
+.transmission-activity table thead th.mmmts-total-up {
+  width: 75px;
+  text-align: right;
+}
+.transmission-activity table tbody td {
+  text-align: center;
+}
+.transmission-activity table tbody td.mmmts-icon {
+  text-align: center;
+}
+.transmission-activity table tbody td.mmmts-active {
+  border-left: 1px solid #666;
+}
+.transmission-activity table tbody td.mmmts-speed-down {
+  border-left: 1px solid #666;
+}
+.transmission-activity table tbody td.mmmts-total-down {
+  text-align: right;
+  border-left: 1px solid #666;
+}
+.transmission-activity table tbody td.mmmts-total-up {
+  text-align: right;
+}
+.transmission-activity table.cumulative-enabled .mmmts-speed-down {
+  width: 117px;
+}
+.transmission-activity table.cumulative-enabled .mmmts-speed-up {
+  width: 117px;
+}
