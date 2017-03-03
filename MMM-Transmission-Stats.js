@@ -158,10 +158,10 @@ Module.register("MMM-Transmission-Stats", {
             template: MMMTransmissionStats.Templates.updateTable,
             initialize: function(){
                 var that = this;
-                this.updateViews = [];
+                self.updateViews = [];
 
                 this.collection.each(function(update){
-                    that.updateViews.push( new self.components.views.singleUpdate({
+                    self.updateViews.push( new self.components.views.singleUpdate({
                         model: update
                     }));
                 });
@@ -169,8 +169,8 @@ Module.register("MMM-Transmission-Stats", {
             render: function(){
                 var that = this;
                 this.$el.html( this.template( self.addViewConfig({},true) ) );
-                if( this.updateViews.length ){
-                    _(this.updateViews).each(function(updateView){
+                if( self.updateViews.length ){
+                    _(self.updateViews).each(function(updateView){
                         that.$el.find('tbody').append( updateView.render().$el );
                     });    
                 } else {
