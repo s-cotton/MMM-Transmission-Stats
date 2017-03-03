@@ -28,6 +28,17 @@ Module.register("MMM-Transmission-Stats", {
         updateInterval: 5000,
         showCumulative: false,
         showTotals: false,
+
+        precision: {
+            single: {
+                speed: 0,
+                cumulative: 1
+            },
+            totals: {
+                speed: 2,
+                cumulative: 1
+            }
+        },
         debug: false,
     },
 
@@ -120,12 +131,12 @@ Module.register("MMM-Transmission-Stats", {
 
     formatTotals: function(){
         return {
-            totalActive     : this.totals.totalActive   > 0 ? this.totals.totalActive                             : '--',
-            totalInactive   : this.totals.totalInactive > 0 ? this.totals.totalInactive                           : '--',
-            totalRateUp     : this.totals.totalRateUp   > 0 ? this.formatBytes( this.totals.totalRateUp, true )   : '--',
-            totalRateDown   : this.totals.totalRateDown > 0 ? this.formatBytes( this.totals.totalRateDown, true ) : '--',
-            totalUp         : this.totals.totalUp       > 0 ? this.formatBytes( this.totals.totalUp, false )      : '--',
-            totalDown       : this.totals.totalDown     > 0 ? this.formatBytes( this.totals.totalDown, false )    : '--',
+            totalActive     : this.totals.totalActive   > 0 ? this.totals.totalActive                                                                    : '--',
+            totalInactive   : this.totals.totalInactive > 0 ? this.totals.totalInactive                                                                  : '--',
+            totalRateUp     : this.totals.totalRateUp   > 0 ? this.formatBytes( this.totals.totalRateUp, true, this.config.precision.totals.speed )      : '--',
+            totalRateDown   : this.totals.totalRateDown > 0 ? this.formatBytes( this.totals.totalRateDown, true, this.config.precision.totals.speed )    : '--',
+            totalUp         : this.totals.totalUp       > 0 ? this.formatBytes( this.totals.totalUp, false, this.config.precision.totals.cumulative )    : '--',
+            totalDown       : this.totals.totalDown     > 0 ? this.formatBytes( this.totals.totalDown, false, this.config.precision.totals.cumulative )  : '--',
         };
     },
 
@@ -230,10 +241,10 @@ Module.register("MMM-Transmission-Stats", {
         this.updateDom();
     },
 
-    formatBytes: function(bytes,speed){
-        if      (bytes>=1000000000) {bytes=(bytes/1000000000).toFixed(2)+' GB';}
-        else if (bytes>=1000000)    {bytes=(bytes/1000000).toFixed(2)+' MB';}
-        else if (bytes>=1000)       {bytes=(bytes/1000).toFixed(2)+' KB';}
+    formatBytes: function(bytes,speed, precision){
+        if      (bytes>=1000000000) {bytes=(bytes/1000000000).toFixed(precision)+' GB';}
+        else if (bytes>=1000000)    {bytes=(bytes/1000000).toFixed(precision)+' MB';}
+        else if (bytes>=1000)       {bytes=(bytes/1000).toFixed(precision)+' KB';}
         else if (bytes>1)           {bytes=bytes+' b';}
         else if (bytes==1)          {bytes=bytes+' b';}
         else                        {bytes='0 b'; }
@@ -253,10 +264,10 @@ Module.register("MMM-Transmission-Stats", {
         return {
             totalActive     : record.stats.activeTorrentCount > 0 ? record.stats.activeTorrentCount : '--',
             totalInactive   : record.stats.pausedTorrentCount > 0 ? record.stats.pausedTorrentCount : '--',
-            totalRateUp     : record.stats.uploadSpeed > 0 ? this.formatBytes( record.stats.uploadSpeed, true ) : '--',
-            totalRateDown   : record.stats.downloadSpeed > 0 ? this.formatBytes( record.stats.downloadSpeed, true ) : '--',
-            totalUp         : this.formatBytes( record.stats['current-stats'].uploadedBytes, false),
-            totalDown       : this.formatBytes( record.stats['current-stats'].downloadedBytes, false),
+            totalRateUp     : record.stats.uploadSpeed > 0 ? this.formatBytes( record.stats.uploadSpeed, true, this.config.precision.single.speed ) : '--',
+            totalRateDown   : record.stats.downloadSpeed > 0 ? this.formatBytes( record.stats.downloadSpeed, true, this.config.precision.single.speed ) : '--',
+            totalUp         : this.formatBytes( record.stats['current-stats'].uploadedBytes, false, this.config.precision.single.cumulative),
+            totalDown       : this.formatBytes( record.stats['current-stats'].downloadedBytes, false, this.config.precision.single.cumulative),
             serverLabel     : record.server.serverLabel,
             serverIcon      : record.server.serverIcon,
         };

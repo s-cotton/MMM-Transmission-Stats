@@ -24,7 +24,18 @@ modules: [
         ],
         updateInterval: 5000,
         showCumulative: false,
-        showTotals: false
+        showTotals: false,
+
+        precision: {
+            single: {
+                speed: 0,
+                cumulative: 1
+            },
+            totals: {
+                speed: 2,
+                cumulative: 1
+            }
+        },
     }
 },
 ]
@@ -58,6 +69,10 @@ The following properties can be configured:
 		<tr>
 			<td><code>showTotals</code></td>
 			<td>Should totals across all servers be displayed, boolean "true" or "false"</td>
+		</tr>
+		<tr>
+			<td><code>precision</code></td>
+			<td>Allows for changing how many decimal places are shown when doing conversions to larger size designations.</td>
 		</tr>
 	</tbody>
 </table>
