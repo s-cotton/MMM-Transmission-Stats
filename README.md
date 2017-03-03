@@ -5,6 +5,7 @@ This is a module for MagicMirror, intended to show the current transfer statisti
 Clone this repository in your `~/MagicMirror/modules/` folder `( $ cd ~MagicMirror/modules/ )`:
 ````javascript
 git clone https://github.com/s-cotton/MMM-Transmission-Stats.git
+npm install
 ````
 
 ## Using the module
