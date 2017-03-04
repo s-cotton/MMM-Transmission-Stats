@@ -22,7 +22,6 @@ module.exports = NodeHelper.create({
 
   // Subclass socketNotificationReceived received.
   socketNotificationReceived: function(notification, payload) {
-    console.log('Transmission :: Notification - ' + notification );
     if (notification === 'CONFIG' && this.started == false) {
       this.config = payload;
       console.log("Transmission :: Config received", this.config.servers );
@@ -43,7 +42,7 @@ module.exports = NodeHelper.create({
         this.started = true;
         this.updateStats();
       }
-    } else if (notification === 'REFRESH_TRANSMISSION_STATISTICS') {
+    } else if (notification === 'REFRESH_TRANSMISSION_STATISTICS' && this.started == true) {
       this.updateStats();
     }
   },
@@ -56,23 +55,18 @@ module.exports = NodeHelper.create({
       this.transmissionClients[ server_i ].sessionStats(function(err, result){
           self.statsCount = self.statsCount + 1;
           if(err){
-              console.log(err);
               console.log("Transmission :: Stat Error ("+server.serverName+")");
           } else {
-            console.log( "Transmission :: Successful Stat Grab", server, result);
+            if( this.config.debug ) console.log( "Transmission :: Successful Stat Grab", server, result);
             self.storeStats( server_i, server, result);
           }
           self.checkSendStats();
       });
     }, this);
-    /*for( var server_i in this.config.servers ){
-      var thisOutput = this.config.servers[ server_i ];
-      this.transmissionClients[ server_i ]
-    }*/
   },
 
   storeStats: function(offset, server, stats){
-    console.log("Transmission :: Storing Stat");
+    if( this.config.debug ) console.log("Transmission :: Storing Stat");
     this.currentStats[ offset ] = {
       server: server,
       stats: stats
@@ -80,10 +74,10 @@ module.exports = NodeHelper.create({
   },
 
   checkSendStats: function(){
-    console.log("Transmission :: Checking Stat Length " + this.statsCount + " == " + this.config.servers.length );
+    if( this.config.debug ) console.log("Transmission :: Checking Stat Length " + this.statsCount + " == " + this.config.servers.length );
     if( this.statsCount == this.config.servers.length ){
       this.statsCount = 0;
-      console.log('Transmission :: Sending Statistics', this.currentStats);
+      if( this.config.debug ) console.log('Transmission :: Sending Statistics', this.currentStats);
       this.sendSocketNotification("TRANSMISSION_STATISTICS_REFRESHED", this.currentStats);
     }
   },
