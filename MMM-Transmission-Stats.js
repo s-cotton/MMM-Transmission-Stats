@@ -206,6 +206,7 @@ Module.register("MMM-Transmission-Stats", {
 
     getStyles: function() {
         return [
+	    'font-awesome.css',
             this.file('css/main.css')
         ];
     },

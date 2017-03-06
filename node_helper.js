@@ -24,7 +24,8 @@ module.exports = NodeHelper.create({
   socketNotificationReceived: function(notification, payload) {
     if (notification === 'CONFIG' && this.started == false) {
       this.config = payload;
-      console.log("Transmission :: Config received", this.config.servers );
+      if( this.config.debug ) console.log("Transmission :: Config received", this.config.servers );
+      else console.log("Transmission :: Config received" );
       const self = this;
       
 
